@@ -27,7 +27,7 @@ class RSafeStdErr(object):
                 # weird windows 7 error
                 print(msg, end='')
             else:
-                raise
+                raise e
 
     def flush(self):
         sys.stdout.flush()
