@@ -11,6 +11,7 @@ def test_tasks():
     time.sleep(logger.min_runtime)
     logger.complete_task("test")
     assert 'test' not in logger.tasks
+    logger.complete_task("another test")
 
 
 def test_log():
@@ -27,6 +28,12 @@ def test_level():
     logger.set_level(2)
     assert logger.level == logging.DEBUG
     assert logger.logger.level == logging.DEBUG
+    logger.set_level(1)
+    assert logger.level == logging.INFO
+    assert logger.logger.level == logging.INFO
+    logger.set_level(0)
+    assert logger.level == logging.WARNING
+    assert logger.logger.level == logging.WARNING
 
 
 def test_duplicate():
