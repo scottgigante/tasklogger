@@ -9,14 +9,16 @@ def test_ipynb():
         return True
     temp = tasklogger.utils.in_ipynb
     tasklogger.utils.in_ipynb = monkey_patch
-    tasklogger.log_info("ipynb")
+    logger = tasklogger.TaskLogger("ipynb")
+    logger.info("ipynb")
     tasklogger.utils.in_ipynb = temp
 
 
-def test_windows7():
+def test_oserror():
     def monkey_patch(*args, **kwargs):
         raise OSError("[Errno 9] Bad file descriptor")
     temp = os.write
     os.write = monkey_patch
-    tasklogger.log_info("ipynb")
+    logger = tasklogger.TaskLogger("oserror")
+    logger.info("oserror")
     os.write = temp
