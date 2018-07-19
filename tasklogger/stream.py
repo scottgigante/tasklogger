@@ -31,4 +31,10 @@ class RSafeStdErr(object):
                 raise e
 
     def flush(self):
-        sys.stdout.flush()
+        try:
+            sys.stdout.flush()
+        except AttributeError:
+            if sys.stdout is None:
+                pass
+            else:
+                raise
