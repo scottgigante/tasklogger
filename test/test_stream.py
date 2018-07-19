@@ -2,6 +2,7 @@ import tasklogger.stream
 import tasklogger.utils
 import tasklogger
 import os
+import sys
 
 
 def test_ipynb():
@@ -22,3 +23,12 @@ def test_oserror():
     logger = tasklogger.TaskLogger("oserror")
     logger.info("oserror")
     os.write = temp
+
+
+def test_no_stdout():
+    temp = sys.stdout
+    sys.stdout = None
+    logger = tasklogger.TaskLogger("no stdout")
+    logger.info("no stdout")
+    logger.logger.handlers[0].stream.flush()
+    sys.stdout = temp
