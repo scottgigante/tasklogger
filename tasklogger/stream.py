@@ -34,7 +34,7 @@ class RSafeStdErr(object):
         try:
             sys.stdout.flush()
         except AttributeError:
-            if sys.stdout is None:
+            if sys is None or sys.stdout is None:
                 pass
             else:
                 raise
