@@ -34,8 +34,8 @@ setup(name='tasklogger',
       extras_require={'test': test_requires},
       test_suite='nose2.collector.collector',
       long_description=readme,
-      url='https://github.com/KrishnaswamyLab/tasklogger',
-      download_url="https://github.com/KrishnaswamyLab/tasklogger/archive/v{}.tar.gz".format(
+      url='https://github.com/scottgigante/tasklogger',
+      download_url="https://github.com/scottgigante/tasklogger/archive/v{}.tar.gz".format(
           version),
       keywords=['graphs',
                 'big-data',
