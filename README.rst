@@ -30,6 +30,8 @@ tasklogger is available on `pip`. Install by running the following in a terminal
 Usage example
 -------------
 
+Use `tasklogger` for all your logging needs - receive timed updates mid-computation using `tasklogger.log_start` and `tasklogger.log_complete`::
+
     >>> import tasklogger
     >>> import time
     >>> tasklogger.log_start("Supertask")
