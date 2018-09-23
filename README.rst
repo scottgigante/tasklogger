@@ -25,9 +25,28 @@ Installation
 
 tasklogger is available on `pip`. Install by running the following in a terminal::
 
-        pip install --user tasklogger
+    pip install --user tasklogger
 
 Usage example
 -------------
 
-TODO
+    >>> import tasklogger
+    >>> import time
+    >>> tasklogger.log_start("Supertask")
+    Calculating Supertask...
+    >>> time.sleep(1)
+    >>> tasklogger.log_start("Subtask")
+    Calculating Subtask...
+    >>> time.sleep(1)
+    >>> tasklogger.log_complete("Subtask")
+    Calculated Subtask in 1.01 seconds.
+    >>> time.sleep(1)
+    >>> tasklogger.log_complete("Supertask")
+    Calculated Supertask in 3.02 seconds.
+    >>> tasklogger.log_info("Log some stuff that doesn't need timing")
+    Log some stuff that doesn't need timing
+    >>> tasklogger.log_debug("Log some stuff that normally isn't needed")
+    >>> tasklogger.set_level(2)
+    Set TaskLogger logging to DEBUG
+    >>> tasklogger.log_debug("Log some stuff that normally isn't needed")
+    Log some stuff that normally isn't needed
