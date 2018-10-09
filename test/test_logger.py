@@ -42,10 +42,10 @@ def test_timer():
     logger = tasklogger.TaskLogger("test_timer")
     logger.set_timer("cpu")
     logger.start_task("test")
-    time.sleep(logger.min_runtime)
+    time.sleep(logger.min_runtime * 10)
     runtime = logger.complete_task("test")
     assert runtime is not None
-    assert runtime < logger.min_runtime
+    assert runtime < logger.min_runtime * 10
     logger.set_timer(lambda: 1000 * time.time())
     logger.start_task("test")
     time.sleep(logger.min_runtime)
