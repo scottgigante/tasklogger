@@ -5,6 +5,9 @@ tasklogger
 .. image:: https://img.shields.io/pypi/v/tasklogger.svg
     :target: https://pypi.org/project/tasklogger/
     :alt: Latest PyPi version
+.. image:: https://anaconda.org/conda-forge/tasklogger/badges/version.svg
+    :target: https://anaconda.org/conda-forge/tasklogger/
+    :alt: Latest Conda version
 .. image:: https://api.travis-ci.com/scottgigante/tasklogger.svg?branch=master
     :target: https://travis-ci.com/scottgigante/tasklogger
     :alt: Travis CI Build
