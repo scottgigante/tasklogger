@@ -31,3 +31,13 @@ def test_level():
     logger = tasklogger.set_level(2)
     assert logger.level == logging.DEBUG
     assert logger.logger.level == logging.DEBUG
+
+
+def test_timer():
+    logger = tasklogger.set_timer("wall")
+    assert logger.timer == time.time
+    logger = tasklogger.set_timer("cpu")
+    assert logger.timer == time.process_time
+    timer = lambda: 10
+    logger = tasklogger.set_timer(timer)
+    assert logger.timer == timer

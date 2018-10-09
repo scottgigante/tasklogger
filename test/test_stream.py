@@ -1,6 +1,7 @@
 import tasklogger.stream
 import tasklogger.utils
 import tasklogger
+import numpy as np
 import os
 import sys
 
@@ -32,3 +33,16 @@ def test_no_stdout():
     logger.info("no stdout")
     logger.logger.handlers[0].stream.flush()
     sys.stdout = temp
+
+
+def test_stderr():
+    temp = sys.stdout
+    sys.stdout = None
+    logger = tasklogger.TaskLogger("stderr", stream="stderr")
+    logger.info("stderr")
+    sys.stdout = temp
+
+
+def test_invalid_stream():
+    np.testing.assert_raises(ValueError, tasklogger.TaskLogger,
+                             "invalid stream", stream="invalid")

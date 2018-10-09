@@ -9,7 +9,9 @@ def test_tasks():
     logger.start_task("test")
     assert time.time() - logger.tasks['test'] < 0.01
     time.sleep(logger.min_runtime)
-    logger.complete_task("test")
+    runtime = logger.complete_task("test")
+    assert runtime is not None
+    assert runtime >= logger.min_runtime
     assert 'test' not in logger.tasks
     logger.complete_task("another test")
 
@@ -34,6 +36,22 @@ def test_level():
     logger.set_level(0)
     assert logger.level == logging.WARNING
     assert logger.logger.level == logging.WARNING
+
+
+def test_timer():
+    logger = tasklogger.TaskLogger("test_timer")
+    logger.set_timer("cpu")
+    logger.start_task("test")
+    time.sleep(logger.min_runtime)
+    runtime = logger.complete_task("test")
+    assert runtime is not None
+    assert runtime < logger.min_runtime
+    logger.set_timer(lambda: 1000 * time.time())
+    logger.start_task("test")
+    time.sleep(logger.min_runtime)
+    runtime = logger.complete_task("test")
+    assert runtime is not None
+    assert runtime >= 1000 * logger.min_runtime
 
 
 def test_duplicate():

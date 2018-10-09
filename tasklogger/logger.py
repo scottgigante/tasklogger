@@ -6,22 +6,44 @@ from . import stream
 
 
 class TaskLogger(object):
-    """
-    Class which deals with timing and logging tasks
+    """Class which deals with timing and logging tasks
+
+    Parameters
+    ----------
+    name : `str`, optional (default: "TaskLogger")
+        Name used to retrieve the unique TaskLogger
+    level : `int` or `bool`, optional (default: 1)
+        Integer logging level.
+        Interchangeable with `logging.WARNING` (0, False),
+        `logging.INFO` (1, True) and `logging.DEBUG` (2).
+    timer : {'wall', 'cpu', or callable}, optional (default 'wall')
+        Timer function used to measure task running times.
+        'wall' uses `time.time`, 'cpu' uses `time.process_time`
+    stream: ['stderr', 'stdout'], optional (default: "stdout")
+        File stream to which logs are printed
+    min_runtime : float, optional (default: 0.01)
+        Time below which a completion message is not printed
+
+    Properties
+    ----------
+    logger : `logging.Logger`
+        Python logging class used to print log messages
     """
 
     def __init__(self, name="TaskLogger", level=1,
-                 min_runtime=0.01, *args, **kwargs):
+                 timer="wall", stream="stdout",
+                 min_runtime=0.01, **kwargs):
         self.tasks = {}
         self.name = name
         self.min_runtime = min_runtime
+        self.stream = stream
         if hasattr(self.logger, "tasklogger"):
             raise RuntimeError("TaskLogger {0} already exists. Please set "
                                "`name` to be unique or use "
                                "`tasklogger.get_tasklogger(logger={0})".format(
                                    name))
         self.set_level(level)
-        super().__init__(*args, **kwargs)
+        self.set_timer(timer)
 
     @property
     def logger(self):
@@ -36,11 +58,10 @@ class TaskLogger(object):
         return logging.getLogger(self.name)
 
     def set_level(self, level=1):
-        """Set up logging
+        """Set the logging level
 
         Parameters
         ----------
-
         level : `int` or `bool` (optional, default: 1)
             If False or 0, prints WARNING and higher messages.
             If True or 1, prints INFO and higher messages.
@@ -59,7 +80,8 @@ class TaskLogger(object):
         if not self.logger.handlers:
             self.logger.tasklogger = self
             self.logger.propagate = False
-            handler = logging.StreamHandler(stream=stream.RSafeStdErr())
+            handler = logging.StreamHandler(
+                stream=stream.RSafeStream(stream=self.stream))
             handler.setFormatter(logging.Formatter(fmt='%(message)s'))
             self.logger.addHandler(handler)
 
@@ -69,46 +91,121 @@ class TaskLogger(object):
             self.debug("Set {} logging to {}".format(
                 self.name, level_name))
 
-    def debug(self, msg):
+    def set_timer(self, timer="wall"):
+        """Set the timer function
+
+        Parameters
+        ----------
+        timer : {'wall', 'cpu', or callable}
+                Timer function used to measure task running times.
+                'wall' uses `time.time`, 'cpu' uses `time.process_time`
+
+        Returns
+        -------
+        self
         """
+        if timer == "wall":
+            timer = time.time
+        elif timer == "cpu":
+            timer = time.process_time
+        self.timer = timer
+        return self
+
+    def debug(self, msg):
+        """Log a DEBUG message
+
         Convenience function to log a message to the default Logger
+
+        Parameters
+        ----------
+        msg : str
+            Message to be logged
         """
         self.logger.debug(msg)
 
     def info(self, msg):
-        """
+        """Log an INFO message
+
         Convenience function to log a message to the default Logger
+
+        Parameters
+        ----------
+        msg : str
+            Message to be logged
         """
         self.logger.info(msg)
 
     def warning(self, msg):
-        """
+        """Log a WARNING message
+
         Convenience function to log a message to the default Logger
+
+        Parameters
+        ----------
+        msg : str
+            Message to be logged
         """
         self.logger.warning(msg)
 
     def error(self, msg):
-        """
+        """Log an ERROR message
+
         Convenience function to log a message to the default Logger
+
+        Parameters
+        ----------
+        msg : str
+            Message to be logged
         """
         self.logger.error(msg)
 
     def critical(self, msg):
-        """
+        """Log a CRITICAL message
+
         Convenience function to log a message to the default Logger
+
+        Parameters
+        ----------
+        msg : str
+            Message to be logged
         """
         self.logger.critical(msg)
 
     def start_task(self, task):
-        self.tasks[task] = time.time()
+        """Begin logging of a task
+
+        Stores the time this task was started in order to return
+        time lapsed when `complete_task` is called.
+
+        Parameters
+        ----------
+        task : str
+            Name of the task to be started
+        """
+        self.tasks[task] = self.timer()
         self.info("Calculating {}...".format(task))
 
     def complete_task(self, task):
+        """Complete logging of a task
+
+        Returns the time lapsed since `start_task` was called
+
+        Parameters
+        ----------
+        task : str
+            Name of the task to be started
+
+        Returns
+        -------
+        time : float
+            The time lapsed between task start and completion
+        """
         try:
-            runtime = time.time() - self.tasks[task]
+            runtime = self.timer() - self.tasks[task]
             if runtime >= self.min_runtime:
                 self.info("Calculated {} in {:.2f} seconds.".format(
                     task, runtime))
             del self.tasks[task]
+            return runtime
         except KeyError:
             self.info("Calculated {}.".format(task))
