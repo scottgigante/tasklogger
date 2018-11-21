@@ -33,6 +33,11 @@ def test_level():
     assert logger.logger.level == logging.DEBUG
 
 
+def test_indent():
+    logger = tasklogger.set_indent(0)
+    assert logger.indent == 0
+
+
 def test_timer():
     logger = tasklogger.set_timer("wall")
     assert logger.timer == time.time

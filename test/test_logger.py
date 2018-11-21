@@ -38,6 +38,12 @@ def test_level():
     assert logger.logger.level == logging.WARNING
 
 
+def test_indent():
+    logger = tasklogger.TaskLogger("test_indent")
+    logger.set_indent(0)
+    assert logger.indent == 0
+
+
 def test_timer():
     logger = tasklogger.TaskLogger("test_timer")
     logger.set_timer("cpu")

@@ -23,6 +23,9 @@ class TaskLogger(object):
         File stream to which logs are printed
     min_runtime : float, optional (default: 0.01)
         Time below which a completion message is not printed
+    indent : int, optional (default: 2)
+        number of spaces by which to indent based on the
+        number of tasks currently running
 
     Properties
     ----------
@@ -32,11 +35,12 @@ class TaskLogger(object):
 
     def __init__(self, name="TaskLogger", level=1,
                  timer="wall", stream="stdout",
-                 min_runtime=0.01, **kwargs):
+                 min_runtime=0.01, indent=2, **kwargs):
         self.tasks = {}
         self.name = name
         self.min_runtime = min_runtime
         self.stream = stream
+        self.indent = indent
         if hasattr(self.logger, "tasklogger"):
             raise RuntimeError("TaskLogger {0} already exists. Please set "
                                "`name` to be unique or use "
@@ -111,6 +115,29 @@ class TaskLogger(object):
         self.timer = timer
         return self
 
+    def set_indent(self, indent=2):
+        """Set the indent size
+
+        Parameters
+        ----------
+        indent : int, optional (default: 2)
+            number of spaces by which to indent based on the
+            number of tasks currently running
+
+        Returns
+        -------
+        self
+        """
+        self.indent = indent
+        return self
+
+    def _log(self, log_fn, msg):
+        """Log a message
+        """
+        if self.indent > 0:
+            msg = len(self.tasks) * self.indent * ' ' + msg
+        return log_fn(msg)
+
     def debug(self, msg):
         """Log a DEBUG message
 
@@ -121,7 +148,7 @@ class TaskLogger(object):
         msg : str
             Message to be logged
         """
-        self.logger.debug(msg)
+        self._log(self.logger.debug, msg)
 
     def info(self, msg):
         """Log an INFO message
@@ -133,7 +160,7 @@ class TaskLogger(object):
         msg : str
             Message to be logged
         """
-        self.logger.info(msg)
+        self._log(self.logger.info, msg)
 
     def warning(self, msg):
         """Log a WARNING message
@@ -145,7 +172,7 @@ class TaskLogger(object):
         msg : str
             Message to be logged
         """
-        self.logger.warning(msg)
+        self._log(self.logger.warning, msg)
 
     def error(self, msg):
         """Log an ERROR message
@@ -157,7 +184,7 @@ class TaskLogger(object):
         msg : str
             Message to be logged
         """
-        self.logger.error(msg)
+        self._log(self.logger.error, msg)
 
     def critical(self, msg):
         """Log a CRITICAL message
@@ -169,7 +196,7 @@ class TaskLogger(object):
         msg : str
             Message to be logged
         """
-        self.logger.critical(msg)
+        self._log(self.logger.critical, msg)
 
     def start_task(self, task):
         """Begin logging of a task
@@ -182,8 +209,8 @@ class TaskLogger(object):
         task : str
             Name of the task to be started
         """
-        self.tasks[task] = self.timer()
         self.info("Calculating {}...".format(task))
+        self.tasks[task] = self.timer()
 
     def complete_task(self, task):
         """Complete logging of a task
@@ -202,10 +229,10 @@ class TaskLogger(object):
         """
         try:
             runtime = self.timer() - self.tasks[task]
+            del self.tasks[task]
             if runtime >= self.min_runtime:
                 self.info("Calculated {} in {:.2f} seconds.".format(
                     task, runtime))
-            del self.tasks[task]
             return runtime
         except KeyError:
             self.info("Calculated {}.".format(task))

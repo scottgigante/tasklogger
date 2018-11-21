@@ -170,7 +170,7 @@ def log_critical(msg, logger="TaskLogger"):
     return tasklogger
 
 
-def set_level(level, logger="TaskLogger"):
+def set_level(level=1, logger="TaskLogger"):
     """Set the logging level
 
     Convenience function to set the logging level
@@ -191,14 +191,14 @@ def set_level(level, logger="TaskLogger"):
     return tasklogger
 
 
-def set_timer(timer, logger="TaskLogger"):
+def set_timer(timer='wall', logger="TaskLogger"):
     """Set the timer function
 
     Convenience function to set the task timer
 
     Parameters
     ----------
-    timer : {'wall', 'cpu', or callable}
+    timer : {'wall', 'cpu', or callable}, optional, default='wall'
             Timer function used to measure task running times.
             'wall' uses `time.time`, 'cpu' uses `time.process_time`
 
@@ -208,4 +208,24 @@ def set_timer(timer, logger="TaskLogger"):
     """
     tasklogger = get_tasklogger(logger)
     tasklogger.set_timer(timer)
+    return tasklogger
+
+
+def set_indent(indent=2, logger="TaskLogger"):
+    """Set the indent function
+
+    Convenience function to set the indent size
+
+    Parameters
+    ----------
+    indent : int, optional (default: 2)
+        number of spaces by which to indent based on the
+        number of tasks currently running`
+
+    Returns
+    -------
+    logger : TaskLogger
+    """
+    tasklogger = get_tasklogger(logger)
+    tasklogger.set_indent(indent)
     return tasklogger
