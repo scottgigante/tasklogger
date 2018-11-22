@@ -29,12 +29,10 @@ Installation
 tasklogger is available on `pip`. Install by running the following in a terminal::
 
     pip install --user tasklogger
-    
+
 Alternatively, tasklogger can be installed using `Conda <https://conda.io/docs/>`_ (most easily obtained via the `Miniconda Python distribution <https://conda.io/miniconda.html>`_)::
 
-
     conda install -c conda-forge tasklogger
-
 
 Usage example
 -------------
