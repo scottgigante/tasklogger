@@ -25,18 +25,13 @@ deploy_script:
     if ($env:APPVEYOR_REPO_BRANCH -ne "master" -or $env:APPVEYOR_REPO_TAG -ne "true") { return }
     # Specify account details for PyPI
     echo "Deploying..."
-    echo [distutils]                                  > $env:USERPROFILE\\.pypirc
-    echo index-servers =                             >> $env:USERPROFILE\\.pypirc
-    echo     pypi                                    >> $env:USERPROFILE\\.pypirc
-    echo [pypi]                                      >> $env:USERPROFILE\\.pypirc
-    echo repository=https://pypi.python.org/pypi     >> $env:USERPROFILE\\.pypirc
-    echo username=scottgigante                       >> $env:USERPROFILE\\.pypirc
-    echo password=$env:pypipassword                  >> $env:USERPROFILE\\.pypirc
+    mv .pypirc $env:USERPROFILE\\.pypirc
+    echo "password=$env:pypipassword" >> $env:USERPROFILE\\.pypirc
     # Workaround required to ensure setup.py finds the .pypirc under Windows
     $env:HOME=$env:USERPROFILE
     # Install wheel-building support
     pip install --user wheel twine
     # Build wheel and upload
     python setup.py sdist bdist_wheel
-    twine upload -r pypi dist/*
+    twine upload -r pypi --skip-existing dist/*
     echo "Deployment complete"
