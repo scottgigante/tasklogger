@@ -48,7 +48,7 @@ def test_indent():
 
 def test_cpu_timer():
     logger = tasklogger.TaskLogger("test_cpu_timer")
-    logger.warning()
+    logger.warning("")
     logger.warning(sys.version)
     logger.warning(platform.system())
     if sys.version[0] == '2' and platform.system() == 'Windows':
