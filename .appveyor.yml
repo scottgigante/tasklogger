@@ -10,6 +10,13 @@ environment:
   pypipassword:
     # https://ci.appveyor.com/tools/encrypt
     secure: OTDy8BHbSmZE4K0JvfAeYQ==
+install:
+- ps: |
+    if ($env:PYTHON) {
+      if ($env:PLATFORM -eq "x64") { $env:PYTHON = "$env:PYTHON-x64" }
+      $env:PATH = "C:\Python$env:PYTHON\;C:\Python$env:PYTHON\Scripts\;$env:PATH"
+      pip install --upgrade pip
+    }
 build_script:
 - cmd: pip install -e .[test]
 test_script:
