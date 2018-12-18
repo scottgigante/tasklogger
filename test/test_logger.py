@@ -46,8 +46,11 @@ def test_indent():
     assert logger.indent == 0
 
 
-def test_timer():
-    logger = tasklogger.TaskLogger("test_timer")
+def test_cpu_timer():
+    logger = tasklogger.TaskLogger("test_cpu_timer")
+    logger.warning()
+    logger.warning(sys.version)
+    logger.warning(platform.system())
     if sys.version[0] == '2' and platform.system() == 'Windows':
         np.testing.assert_raises(RuntimeError, logger.set_timer,
                                  "cpu")
@@ -58,12 +61,16 @@ def test_timer():
         runtime = logger.complete_task("test")
         assert runtime is not None
         assert runtime < logger.min_runtime * 10
-        logger.set_timer(lambda: 1000 * time.time())
-        logger.start_task("test")
-        time.sleep(logger.min_runtime)
-        runtime = logger.complete_task("test")
-        assert runtime is not None
-        assert runtime >= 1000 * logger.min_runtime
+
+
+def test_custom_timer():
+    logger = tasklogger.TaskLogger("test_custom_timer")
+    logger.set_timer(lambda: 1000 * time.time())
+    logger.start_task("test")
+    time.sleep(logger.min_runtime)
+    runtime = logger.complete_task("test")
+    assert runtime is not None
+    assert runtime >= 1000 * logger.min_runtime
 
 
 def test_duplicate():
