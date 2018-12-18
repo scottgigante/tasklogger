@@ -12,5 +12,19 @@
     - pip install -U .[test]
     - python setup.py test
 
+  deploy:
+    provider: pypi
+    user: scottgigante
+    password:
+      # https://docs.travis-ci.com/user/environment-variables/#encrypting-environment-variables
+      secure:
+        "eg96qFox6jUlR3kb9xiKZjLKzWd4eDXplADdJK9c2rWJ4iLFVM3Kq0T/TojFkKBjUjEXi37OW8h0cZISYMySHP8gW2LSDOEK1eVxMa2BQa+d1BKzUgvLg4irf/TaZoeLubHdomWXv7Lp0j0uDmPnoNC6KKrGUx7G886jxDiz/xuH4Dv8fSbB98KX7qe+7wc6SPgM20oekWkHYHy0px03IBQkI7tulpQGBZjRgxLCyUU6d55Q9VaghXjIVhj3QFU3LJXVCOdF6+kxb9aJq5PoNxKdGJwkIrOOpNQt4q3c4Ybm+S4HpvcgLjDZEgSxslP2JMcgcZfyibNsf7y4v0axafiAsEh2tT0fNSK5oaisR0SLbebGfXgWWO4gfmHIg2EnOgu9rPv8VSDUi01kjJM5htvRPjuQ9s7YynGVTQrgtiNB3pqk3zihbKdceM5Wz1/bkaIYQlvQV3I9grLHwgD6vyWUlEucpyJcjnf92tc8fdJOmBN52jKLu9hZ61pKFdj7bJchmMxUmcgHhGXiEUn6yOM7SVmLhJdYFcO/xSnrGXvu5f9PDgR9vtubdqYgD8aunAS9+lG9ssONnd1MvDSBou5m+LbJWgd0qm2PwF63JjThlweGDBddhpAXN1kXIGgbzKnGMR4j++NquPXmDU5ioFg3QrrA9QYTVWPa2sGGhbY="
+    distributions: "sdist bdist_wheel"
+    skip_existing: true
+    skip_cleanup: true
+    on:
+      tags: true
+      branch: master
+
   after_success:
     - coveralls
