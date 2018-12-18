@@ -111,7 +111,12 @@ class TaskLogger(object):
         if timer == "wall":
             timer = time.time
         elif timer == "cpu":
-            timer = time.process_time
+            try:
+                timer = time.process_time
+            except AttributeError:
+                raise RuntimeError(
+                    "Python2.7 on Windows does not offer a CPU time function. "
+                    "Please upgrade to Python >= 3.5.")
         self.timer = timer
         return self
 

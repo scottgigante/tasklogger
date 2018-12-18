@@ -2,6 +2,8 @@ import tasklogger
 import time
 import numpy as np
 import logging
+import platform
+import sys
 
 
 def test_tasks():
@@ -46,18 +48,22 @@ def test_indent():
 
 def test_timer():
     logger = tasklogger.TaskLogger("test_timer")
-    logger.set_timer("cpu")
-    logger.start_task("test")
-    time.sleep(logger.min_runtime * 10)
-    runtime = logger.complete_task("test")
-    assert runtime is not None
-    assert runtime < logger.min_runtime * 10
-    logger.set_timer(lambda: 1000 * time.time())
-    logger.start_task("test")
-    time.sleep(logger.min_runtime)
-    runtime = logger.complete_task("test")
-    assert runtime is not None
-    assert runtime >= 1000 * logger.min_runtime
+    if sys.version[0] == '2' and platform.system() == 'Windows':
+        np.testing.assert_raises(RuntimeError, logger.set_timer,
+                                 "cpu")
+    else:
+        logger.set_timer("cpu")
+        logger.start_task("test")
+        time.sleep(logger.min_runtime * 10)
+        runtime = logger.complete_task("test")
+        assert runtime is not None
+        assert runtime < logger.min_runtime * 10
+        logger.set_timer(lambda: 1000 * time.time())
+        logger.start_task("test")
+        time.sleep(logger.min_runtime)
+        runtime = logger.complete_task("test")
+        assert runtime is not None
+        assert runtime >= 1000 * logger.min_runtime
 
 
 def test_duplicate():
