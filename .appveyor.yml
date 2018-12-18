@@ -26,12 +26,11 @@ deploy_script:
     # Specify account details for PyPI
     echo "Deploying..."
     mv .pypirc $env:USERPROFILE\\.pypirc
-    echo "password=$env:pypipassword" >> $env:USERPROFILE\\.pypirc
     # Workaround required to ensure setup.py finds the .pypirc under Windows
     $env:HOME=$env:USERPROFILE
     # Install wheel-building support
     pip install --user wheel twine
     # Build wheel and upload
     python setup.py sdist bdist_wheel
-    twine upload -r pypi --skip-existing dist/*
+    twine upload -r pypi -p $env:pypipassword --skip-existing dist/*
     echo "Deployment complete"
