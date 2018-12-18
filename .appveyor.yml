@@ -24,6 +24,7 @@ deploy_script:
 - ps: |
     if ($env:APPVEYOR_REPO_BRANCH -ne "master" -or $env:APPVEYOR_REPO_TAG -ne "true") { return }
     # Specify account details for PyPI
+    echo "Deploying..."
     echo [distutils]                                  > $env:USERPROFILE\\.pypirc
     echo index-servers =                             >> $env:USERPROFILE\\.pypirc
     echo     pypi                                    >> $env:USERPROFILE\\.pypirc
@@ -38,3 +39,4 @@ deploy_script:
     # Build wheel and upload
     python setup.py sdist bdist_wheel
     twine upload -r pypi dist/*
+    echo "Deployment complete"
