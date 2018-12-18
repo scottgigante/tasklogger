@@ -11,7 +11,7 @@ environment:
     # https://ci.appveyor.com/tools/encrypt
     secure: OTDy8BHbSmZE4K0JvfAeYQ==
 build_script:
-- cmd: pip install -e .
+- cmd: pip install -e .[test]
 test_script:
 - cmd: python setup.py test
 deploy_script: 
