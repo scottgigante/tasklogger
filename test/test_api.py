@@ -1,6 +1,9 @@
 import tasklogger
 import time
 import logging
+import numpy as np
+import sys
+import platform
 
 
 def test_get_logger():
@@ -41,8 +44,12 @@ def test_indent():
 def test_timer():
     logger = tasklogger.set_timer("wall")
     assert logger.timer == time.time
-    logger = tasklogger.set_timer("cpu")
-    assert logger.timer == time.process_time
     timer = lambda: 10
     logger = tasklogger.set_timer(timer)
     assert logger.timer == timer
+    if sys.version[0] == '2' and platform.system() == 'Windows':
+        np.testing.assert_raises(RuntimeError, logger.set_timer,
+                                 "cpu")
+    else:
+        logger = tasklogger.set_timer("cpu")
+        assert logger.timer == time.process_time
