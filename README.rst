@@ -11,6 +11,9 @@ tasklogger
 .. image:: https://api.travis-ci.com/scottgigante/tasklogger.svg?branch=master
     :target: https://travis-ci.com/scottgigante/tasklogger
     :alt: Travis CI Build
+.. image:: https://ci.appveyor.com/api/projects/status/qi79tqay73uslr0i/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/scottgigante/tasklogger
+    :alt: Appveyor Build
 .. image:: https://coveralls.io/repos/github/scottgigante/tasklogger/badge.svg?branch=master
     :target: https://coveralls.io/github/scottgigante/tasklogger?branch=master
     :alt: Coverage Status
