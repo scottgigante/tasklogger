@@ -15,7 +15,7 @@ install:
     if ($env:PYTHON) {
       if ($env:PLATFORM -eq "x64") { $env:PYTHON = "$env:PYTHON-x64" }
       $env:PATH = "C:\Python$env:PYTHON\;C:\Python$env:PYTHON\Scripts\;$env:PATH"
-      pip install --user --upgrade pip
+      python -m pip install --upgrade --user pip
     }
 build_script:
 - cmd: pip install --user -e .[test]
