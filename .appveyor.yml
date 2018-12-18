@@ -14,7 +14,7 @@ install:
 - ps: |
     if ($env:PYTHON) {
       if ($env:PLATFORM -eq "x64") { $env:PYTHON = "$env:PYTHON-x64" }
-      $env:PATH = "C:\Python$env:PYTHON\;C:\Python$env:PYTHON\Scripts\;$env:PATH"
+      $env:PATH = "C:\Python$env:PYTHON\;C:\Python$env:PYTHON\Scripts\;C:\Users\appveyor\AppData\Roaming\Python\Scripts;$env:PATH"
     }
 build_script:
 - cmd: pip install --user -e .[test]
@@ -24,15 +24,15 @@ deploy_script:
 - ps: |
     if ($env:APPVEYOR_REPO_BRANCH -ne "master" -or $env:APPVEYOR_REPO_TAG -ne "true") { return }
     # Specify account details for PyPI
-    echo [distutils]                                  > %USERPROFILE%\\.pypirc
-    echo index-servers =                             >> %USERPROFILE%\\.pypirc
-    echo     pypi                                    >> %USERPROFILE%\\.pypirc
-    echo [pypi]                                      >> %USERPROFILE%\\.pypirc
-    echo repository=https://pypi.python.org/pypi     >> %USERPROFILE%\\.pypirc
-    echo username=scottgigante                       >> %USERPROFILE%\\.pypirc
-    echo password=$(pypipassword)                    >> %USERPROFILE%\\.pypirc
+    echo [distutils]                                  > $env:USERPROFILE\\.pypirc
+    echo index-servers =                             >> $env:USERPROFILE\\.pypirc
+    echo     pypi                                    >> $env:USERPROFILE\\.pypirc
+    echo [pypi]                                      >> $env:USERPROFILE\\.pypirc
+    echo repository=https://pypi.python.org/pypi     >> $env:USERPROFILE\\.pypirc
+    echo username=scottgigante                       >> $env:USERPROFILE\\.pypirc
+    echo password=$env:pypipassword                  >> $env:USERPROFILE\\.pypirc
     # Workaround required to ensure setup.py finds the .pypirc under Windows
-    set HOME=%USERPROFILE%
+    $env:HOME=$env:USERPROFILE
     # Install wheel-building support
     pip install --user wheel twine
     # Build wheel and upload
