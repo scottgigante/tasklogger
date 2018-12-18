@@ -1,0 +1,34 @@
+platform:
+- x64
+- Win32
+environment:
+  matrix:
+    - PYTHON: 27
+    - PYTHON: 35
+    - PYTHON: 36
+    - PYTHON: 37
+  pypipassword:
+    # https://ci.appveyor.com/tools/encrypt
+    secure: OTDy8BHbSmZE4K0JvfAeYQ==
+build_script:
+- cmd: pip install -e .
+test_script:
+- cmd: python setup.py test
+deploy_script: 
+- ps: |
+    if ($env:APPVEYOR_REPO_BRANCH -ne "master" -or $env:APPVEYOR_REPO_TAG -ne "true") { return }
+    # Specify account details for PyPI
+    echo [distutils]                                  > %USERPROFILE%\\.pypirc
+    echo index-servers =                             >> %USERPROFILE%\\.pypirc
+    echo     pypi                                    >> %USERPROFILE%\\.pypirc
+    echo [pypi]                                      >> %USERPROFILE%\\.pypirc
+    echo repository=https://pypi.python.org/pypi     >> %USERPROFILE%\\.pypirc
+    echo username=scottgigante                       >> %USERPROFILE%\\.pypirc
+    echo password=$(pypipassword)                    >> %USERPROFILE%\\.pypirc
+    # Workaround required to ensure setup.py finds the .pypirc under Windows
+    set HOME=%USERPROFILE%
+    # Install wheel-building support
+    pip install --user wheel twine
+    # Build wheel and upload
+    python setup.py sdist bdist_wheel
+    twine upload -r pypi dist/*
