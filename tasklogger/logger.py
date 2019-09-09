@@ -241,3 +241,7 @@ class TaskLogger(object):
             return runtime
         except KeyError:
             self.info("Calculated {}.".format(task))
+    
+    def task(self, task):
+        from .task import Task
+        return Task(task, self)

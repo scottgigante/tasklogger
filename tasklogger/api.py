@@ -1,6 +1,7 @@
 from __future__ import absolute_import, print_function
 import logging
 from . import logger
+from .task import Task
 
 
 def get_tasklogger(name="TaskLogger"):
@@ -63,6 +64,10 @@ def log_complete(task, logger="TaskLogger"):
     """
     tasklogger = get_tasklogger(logger)
     return tasklogger.complete_task(task)
+
+
+def log_task(task, logger="TaskLogger"):
+    return Task(task, logger=logger)
 
 
 def log_debug(msg, logger="TaskLogger"):
