@@ -78,13 +78,13 @@ Log wall time, CPU time, or any other counter function with the class API::
     >>> with logger.task("Supertask"):
     ...     time.sleep(1)
     ...     with logger.task("Subtask"):
-    ...        time.sleep(1)
+    ...        _ = [[(i,j) for j in range(i)] for i in range(1000)]
     ...     time.sleep(1)
     Calculating Supertask...
       Calculating Subtask...
-      Calculated Subtask in 0.00 seconds.
-    Calculated Supertask in 0.00 seconds.
-    >>> logger = tasklogger.TaskLogger(name='nano_logger', timer=time.monotonic_ns, min_runtime=0)
+      Calculated Subtask in 0.09 seconds.
+    Calculated Supertask in 0.09 seconds.
+    >>> logger = tasklogger.TaskLogger(name='nano_logger', timer=time.monotonic_ns)
     >>> with logger.task("Supertask"):
     ...     time.sleep(1)
     ...     with logger.task("Subtask"):
