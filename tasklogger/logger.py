@@ -2,6 +2,7 @@ from __future__ import absolute_import, print_function
 from builtins import super
 import logging
 import time
+import contextlib
 from . import stream
 
 
@@ -242,6 +243,28 @@ class TaskLogger(object):
         except KeyError:
             self.info("Calculated {}.".format(task))
     
+    @contextlib.contextmanager
     def task(self, task):
-        from .task import Task
-        return Task(task, self)
+        """Context manager for logging a task
+
+        Times the action within the context frame
+
+        Parameters
+        ----------
+        task : str
+            Name of the task to be started
+
+        Examples
+        --------
+        >>> import tasklogger
+        >>> import time
+        >>> logger = tasklogger.TaskLogger()
+        >>> with logger.task('test'):
+        ...     time.sleep(1)
+        Calculating test...
+        Calculated test in 1.00 seconds.
+        """
+        try:
+            yield self.start_task(task)
+        finally: 
+            self.complete_task(task)

@@ -1,7 +1,6 @@
 from __future__ import absolute_import, print_function
 import logging
 from . import logger
-from .task import Task
 
 
 def get_tasklogger(name="TaskLogger"):
@@ -67,7 +66,28 @@ def log_complete(task, logger="TaskLogger"):
 
 
 def log_task(task, logger="TaskLogger"):
-    return Task(task, logger=logger)
+    """Context manager for logging a task
+
+    Times the action within the context frame
+
+    Parameters
+    ----------
+    task : str
+        Name of the task to be started
+    logger : str, optional (default: "TaskLogger")
+        Unique name of the logger to retrieve
+
+    Examples
+    --------
+    >>> import tasklogger
+    >>> import time
+    >>> with tasklogger.log_task('test'):
+    ...     time.sleep(1)
+    Calculating test...
+    Calculated test in 1.00 seconds.
+    """
+    tasklogger = get_tasklogger(logger)
+    return tasklogger.task(task)
 
 
 def log_debug(msg, logger="TaskLogger"):
