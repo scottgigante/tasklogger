@@ -76,3 +76,10 @@ def test_duplicate():
                              "test_duplicate")
     logger2 = tasklogger.TaskLogger("test_no_duplicate")
     assert logger.logger is not logger2.logger
+
+
+def test_context():
+    logger = tasklogger.TaskLogger("test_context")
+    with logger.task('test'):
+        assert 'test' in logger.tasks
+    assert 'test' not in logger.tasks

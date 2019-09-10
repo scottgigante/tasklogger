@@ -53,3 +53,10 @@ def test_timer():
     else:
         logger = tasklogger.set_timer("cpu")
         assert logger.timer == time.process_time
+
+
+def test_context():
+    logger = tasklogger.TaskLogger("test_context_api")
+    with tasklogger.log_task('test', logger='test_context_api'):
+        assert 'test' in logger.tasks
+    assert 'test' not in logger.tasks
