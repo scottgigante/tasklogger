@@ -37,10 +37,10 @@ Alternatively, tasklogger can be installed using `Conda <https://conda.io/docs/>
 
     conda install -c conda-forge tasklogger
 
-Usage example
--------------
+Usage examples
+--------------
 
-Use `tasklogger` for all your logging needs - receive timed updates mid-computation using `tasklogger.log_start` and `tasklogger.log_complete`::
+Receive timed updates mid-computation using ``tasklogger.log_start`` and ``tasklogger.log_complete``::
 
     >>> import tasklogger
     >>> import time
@@ -48,13 +48,55 @@ Use `tasklogger` for all your logging needs - receive timed updates mid-computat
     Calculating Supertask...
     >>> time.sleep(1)
     >>> tasklogger.log_start("Subtask")
-    Calculating Subtask...
+      Calculating Subtask...
     >>> time.sleep(1)
     >>> tasklogger.log_complete("Subtask")
-    Calculated Subtask in 1.01 seconds.
+      Calculated Subtask in 1.01 seconds.
     >>> time.sleep(1)
     >>> tasklogger.log_complete("Supertask")
     Calculated Supertask in 3.02 seconds.
+
+Simplify logging syntax with ``tasklogger.log_task``::
+
+    >>> import tasklogger
+    >>> import time
+    >>> with tasklogger.task("Supertask"):
+    ...     time.sleep(1)
+    ...     with tasklogger.log_task("Subtask"):
+    ...        time.sleep(1)
+    ...     time.sleep(1)
+    Calculating Supertask...
+      Calculating Subtask...
+      Calculated Subtask in 1.01 seconds.
+    Calculated Supertask in 3.02 seconds.
+
+Log wall time, CPU time, or any other counter function with the class API::
+
+    >>> import tasklogger
+    >>> import time
+    >>> logger = tasklogger.TaskLogger(name='cpu_logger', timer='cpu', min_runtime=0)
+    >>> with logger.task("Supertask"):
+    ...     time.sleep(1)
+    ...     with logger.task("Subtask"):
+    ...        time.sleep(1)
+    ...     time.sleep(1)
+    Calculating Supertask...
+      Calculating Subtask...
+      Calculated Subtask in 0.00 seconds.
+    Calculated Supertask in 0.00 seconds.
+    >>> logger = tasklogger.TaskLogger(name='nano_logger', timer=time.monotonic_ns, min_runtime=0)
+    >>> with logger.task("Supertask"):
+    ...     time.sleep(1)
+    ...     with logger.task("Subtask"):
+    ...        time.sleep(1)
+    ...     time.sleep(1)
+    Calculating Supertask...
+      Calculating Subtask...
+      Calculated Subtask in 1001083511.00 seconds.
+    Calculated Supertask in 3003702161.00 seconds.
+
+Use ``tasklogger`` for all your logging needs::
+
     >>> tasklogger.log_info("Log some stuff that doesn't need timing")
     Log some stuff that doesn't need timing
     >>> tasklogger.log_debug("Log some stuff that normally isn't needed")

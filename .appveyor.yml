@@ -3,7 +3,6 @@ platform:
 - Win32
 environment:
   matrix:
-    - PYTHON: 27
     - PYTHON: 35
     - PYTHON: 36
     - PYTHON: 37

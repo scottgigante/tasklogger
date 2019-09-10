@@ -65,6 +65,31 @@ def log_complete(task, logger="TaskLogger"):
     return tasklogger.complete_task(task)
 
 
+def log_task(task, logger="TaskLogger"):
+    """Context manager for logging a task
+
+    Times the action within the context frame
+
+    Parameters
+    ----------
+    task : str
+        Name of the task to be started
+    logger : str, optional (default: "TaskLogger")
+        Unique name of the logger to retrieve
+
+    Examples
+    --------
+    >>> import tasklogger
+    >>> import time
+    >>> with tasklogger.log_task('test'):
+    ...     time.sleep(1)
+    Calculating test...
+    Calculated test in 1.00 seconds.
+    """
+    tasklogger = get_tasklogger(logger)
+    return tasklogger.task(task)
+
+
 def log_debug(msg, logger="TaskLogger"):
     """Log a DEBUG message
 

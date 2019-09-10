@@ -13,8 +13,8 @@ test_requires = [
     'coveralls'
 ]
 
-if sys.version_info[:2] < (2, 7) or (3, 0) <= sys.version_info[:2] < (3, 5):
-    raise RuntimeError("Python version 2.7 or >=3.5 required.")
+if sys.version_info[:2] < (3, 5):
+    raise RuntimeError("Python version >=3.5 required.")
 
 version_py = os.path.join(os.path.dirname(
     __file__), 'tasklogger', 'version.py')
@@ -26,7 +26,7 @@ readme = open('README.rst').read()
 setup(name='tasklogger',
       version=version,
       description='tasklogger',
-      author='Scott Gigante, Krishnaswamy Lab, Yale University',
+      author='Scott Gigante, Yale University',
       author_email='scott.gigante@yale.edu',
       packages=['tasklogger', ],
       include_package_data=True,
@@ -38,10 +38,10 @@ setup(name='tasklogger',
       url='https://github.com/scottgigante/tasklogger',
       download_url="https://github.com/scottgigante/tasklogger/archive/v{}.tar.gz".format(
           version),
-      keywords=['graphs',
+      keywords=[
                 'big-data',
-                'signal processing',
-                'manifold-learning',
+                'tool-development',
+                'programming',
                 ],
       classifiers=[
           'Development Status :: 4 - Beta',

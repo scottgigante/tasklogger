@@ -2,6 +2,7 @@ from __future__ import absolute_import, print_function
 from builtins import super
 import logging
 import time
+import contextlib
 from . import stream
 
 
@@ -111,12 +112,10 @@ class TaskLogger(object):
         if timer == "wall":
             timer = time.time
         elif timer == "cpu":
-            try:
-                timer = time.process_time
-            except AttributeError:
-                raise RuntimeError(
-                    "Python2.7 on Windows does not offer a CPU time function. "
-                    "Please upgrade to Python >= 3.5.")
+            timer = time.process_time
+        elif not callable(timer):
+            raise ValueError("Expected timer to be 'wall', 'cpu', or a callable. "
+                             "Got {}".format(timer))
         self.timer = timer
         return self
 
@@ -241,3 +240,29 @@ class TaskLogger(object):
             return runtime
         except KeyError:
             self.info("Calculated {}.".format(task))
+    
+    @contextlib.contextmanager
+    def task(self, task):
+        """Context manager for logging a task
+
+        Times the action within the context frame
+
+        Parameters
+        ----------
+        task : str
+            Name of the task to be started
+
+        Examples
+        --------
+        >>> import tasklogger
+        >>> import time
+        >>> logger = tasklogger.TaskLogger()
+        >>> with logger.task('test'):
+        ...     time.sleep(1)
+        Calculating test...
+        Calculated test in 1.00 seconds.
+        """
+        try:
+            yield self.start_task(task)
+        finally: 
+            self.complete_task(task)

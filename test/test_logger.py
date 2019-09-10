@@ -48,16 +48,12 @@ def test_indent():
 
 def test_cpu_timer():
     logger = tasklogger.TaskLogger("test_cpu_timer")
-    if sys.version[0] == '2' and platform.system() == 'Windows':
-        np.testing.assert_raises(RuntimeError, logger.set_timer,
-                                 "cpu")
-    else:
-        logger.set_timer("cpu")
-        logger.start_task("test")
-        time.sleep(logger.min_runtime * 10)
-        runtime = logger.complete_task("test")
-        assert runtime is not None
-        assert runtime < logger.min_runtime * 10
+    logger.set_timer("cpu")
+    logger.start_task("test")
+    time.sleep(logger.min_runtime * 10)
+    runtime = logger.complete_task("test")
+    assert runtime is not None
+    assert runtime < logger.min_runtime * 10
 
 
 def test_custom_timer():
@@ -70,9 +66,21 @@ def test_custom_timer():
     assert runtime >= 1000 * logger.min_runtime
 
 
+def test_bad_timer():
+    logger = tasklogger.TaskLogger("test_bad_timer")
+    np.testing.assert_raises(ValueError, logger.set_timer, "bad")
+
+
 def test_duplicate():
     logger = tasklogger.TaskLogger("test_duplicate")
     np.testing.assert_raises(RuntimeError, tasklogger.TaskLogger,
                              "test_duplicate")
     logger2 = tasklogger.TaskLogger("test_no_duplicate")
     assert logger.logger is not logger2.logger
+
+
+def test_context():
+    logger = tasklogger.TaskLogger("test_context")
+    with logger.task('test'):
+        assert 'test' in logger.tasks
+    assert 'test' not in logger.tasks
