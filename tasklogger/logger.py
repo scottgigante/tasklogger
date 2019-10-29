@@ -34,19 +34,27 @@ class TaskLogger(object):
         Python logging class used to print log messages
     """
 
-    def __init__(self, name="TaskLogger", level=1,
-                 timer="wall", stream="stdout",
-                 min_runtime=0.01, indent=2, **kwargs):
+    def __init__(
+        self,
+        name="TaskLogger",
+        level=1,
+        timer="wall",
+        stream="stdout",
+        min_runtime=0.01,
+        indent=2,
+        **kwargs
+    ):
         self.tasks = {}
         self.name = name
         self.min_runtime = min_runtime
         self.stream = stream
         self.indent = indent
         if hasattr(self.logger, "tasklogger"):
-            raise RuntimeError("TaskLogger {0} already exists. Please set "
-                               "`name` to be unique or use "
-                               "`tasklogger.get_tasklogger(logger={0})".format(
-                                   name))
+            raise RuntimeError(
+                "TaskLogger {0} already exists. Please set "
+                "`name` to be unique or use "
+                "`tasklogger.get_tasklogger(logger={0})".format(name)
+            )
         self.set_level(level)
         self.set_timer(timer)
 
@@ -86,15 +94,15 @@ class TaskLogger(object):
             self.logger.tasklogger = self
             self.logger.propagate = False
             handler = logging.StreamHandler(
-                stream=stream.RSafeStream(stream=self.stream))
-            handler.setFormatter(logging.Formatter(fmt='%(message)s'))
+                stream=stream.RSafeStream(stream=self.stream)
+            )
+            handler.setFormatter(logging.Formatter(fmt="%(message)s"))
             self.logger.addHandler(handler)
 
         if level != self.logger.level:
             self.level = level
             self.logger.setLevel(level)
-            self.debug("Set {} logging to {}".format(
-                self.name, level_name))
+            self.debug("Set {} logging to {}".format(self.name, level_name))
 
     def set_timer(self, timer="wall"):
         """Set the timer function
@@ -114,8 +122,10 @@ class TaskLogger(object):
         elif timer == "cpu":
             timer = time.process_time
         elif not callable(timer):
-            raise ValueError("Expected timer to be 'wall', 'cpu', or a callable. "
-                             "Got {}".format(timer))
+            raise ValueError(
+                "Expected timer to be 'wall', 'cpu', or a callable. "
+                "Got {}".format(timer)
+            )
         self.timer = timer
         return self
 
@@ -139,7 +149,7 @@ class TaskLogger(object):
         """Log a message
         """
         if self.indent > 0:
-            msg = len(self.tasks) * self.indent * ' ' + msg
+            msg = len(self.tasks) * self.indent * " " + msg
         return log_fn(msg)
 
     def debug(self, msg):
@@ -235,12 +245,11 @@ class TaskLogger(object):
             runtime = self.timer() - self.tasks[task]
             del self.tasks[task]
             if runtime >= self.min_runtime:
-                self.info("Calculated {} in {:.2f} seconds.".format(
-                    task, runtime))
+                self.info("Calculated {} in {:.2f} seconds.".format(task, runtime))
             return runtime
         except KeyError:
             self.info("Calculated {}.".format(task))
-    
+
     @contextlib.contextmanager
     def task(self, task):
         """Context manager for logging a task
@@ -264,5 +273,5 @@ class TaskLogger(object):
         """
         try:
             yield self.start_task(task)
-        finally: 
+        finally:
             self.complete_task(task)

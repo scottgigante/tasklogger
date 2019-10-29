@@ -7,6 +7,7 @@ cache: pip
 sudo: required
 script:
 - pip install -U .[test]
+- if [ "$TRAVIS_PYTHON_VERSION" != "3.5" ]; then black . --check --diff; fi
 - python setup.py test
 deploy:
   provider: pypi

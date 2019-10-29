@@ -9,6 +9,7 @@ import sys
 def test_ipynb():
     def monkey_patch():
         return True
+
     temp = tasklogger.utils.in_ipynb
     tasklogger.utils.in_ipynb = monkey_patch
     logger = tasklogger.TaskLogger("ipynb")
@@ -19,6 +20,7 @@ def test_ipynb():
 def test_oserror():
     def monkey_patch(*args, **kwargs):
         raise OSError("[Errno 9] Bad file descriptor")
+
     temp = os.write
     os.write = monkey_patch
     logger = tasklogger.TaskLogger("oserror")
@@ -44,5 +46,6 @@ def test_stderr():
 
 
 def test_invalid_stream():
-    np.testing.assert_raises(ValueError, tasklogger.TaskLogger,
-                             "invalid stream", stream="invalid")
+    np.testing.assert_raises(
+        ValueError, tasklogger.TaskLogger, "invalid stream", stream="invalid"
+    )

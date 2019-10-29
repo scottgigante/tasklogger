@@ -9,22 +9,22 @@ import sys
 def test_tasks():
     logger = tasklogger.TaskLogger("test_tasks")
     logger.start_task("test")
-    assert time.time() - logger.tasks['test'] < 0.01
+    assert time.time() - logger.tasks["test"] < 0.01
     time.sleep(logger.min_runtime)
     runtime = logger.complete_task("test")
     assert runtime is not None
     assert runtime >= logger.min_runtime
-    assert 'test' not in logger.tasks
+    assert "test" not in logger.tasks
     logger.complete_task("another test")
 
 
 def test_log():
     logger = tasklogger.TaskLogger("test_log")
-    logger.debug('debug')
-    logger.info('info')
-    logger.warning('warning')
-    logger.error('error')
-    logger.critical('critical')
+    logger.debug("debug")
+    logger.info("info")
+    logger.warning("warning")
+    logger.error("error")
+    logger.critical("critical")
 
 
 def test_level():
@@ -73,14 +73,13 @@ def test_bad_timer():
 
 def test_duplicate():
     logger = tasklogger.TaskLogger("test_duplicate")
-    np.testing.assert_raises(RuntimeError, tasklogger.TaskLogger,
-                             "test_duplicate")
+    np.testing.assert_raises(RuntimeError, tasklogger.TaskLogger, "test_duplicate")
     logger2 = tasklogger.TaskLogger("test_no_duplicate")
     assert logger.logger is not logger2.logger
 
 
 def test_context():
     logger = tasklogger.TaskLogger("test_context")
-    with logger.task('test'):
-        assert 'test' in logger.tasks
-    assert 'test' not in logger.tasks
+    with logger.task("test"):
+        assert "test" in logger.tasks
+    assert "test" not in logger.tasks
