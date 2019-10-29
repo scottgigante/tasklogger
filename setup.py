@@ -11,11 +11,12 @@ test_requires = [
     "numpy",
     "coverage",
     "coveralls",
-    "black",
 ]
 
 if sys.version_info[:2] < (3, 5):
     raise RuntimeError("Python version >=3.5 required.")
+elif sys.version_info[:2] >= (3, 6):
+    test_requires += ["black"]
 
 version_py = os.path.join(os.path.dirname(__file__), "tasklogger", "version.py")
 version = open(version_py).read().strip().split("=")[-1].replace('"', "").strip()
