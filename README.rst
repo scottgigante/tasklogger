@@ -23,6 +23,9 @@ tasklogger
 .. image:: https://img.shields.io/github/stars/scottgigante/tasklogger.svg?style=social&label=Stars
     :target: https://github.com/scottgigante/tasklogger/
     :alt: GitHub stars
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code style: black
 
 An extension to the core python logging library for logging the beginning and completion of tasks and subtasks.
 
