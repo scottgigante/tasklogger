@@ -1,9 +1,11 @@
-import tasklogger.stream
-import tasklogger.utils
-import tasklogger
-import numpy as np
 import os
 import sys
+
+import numpy as np
+
+import tasklogger
+import tasklogger.stream
+import tasklogger.utils
 
 
 def test_ipynb():

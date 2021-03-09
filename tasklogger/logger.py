@@ -1,8 +1,10 @@
 from __future__ import absolute_import, print_function
-from builtins import super
+
+import contextlib
 import logging
 import time
-import contextlib
+from builtins import super
+
 from . import stream
 
 
@@ -42,7 +44,7 @@ class TaskLogger(object):
         stream="stdout",
         min_runtime=0.01,
         indent=2,
-        **kwargs
+        **kwargs,
     ):
         self.tasks = {}
         self.name = name
@@ -250,7 +252,8 @@ class TaskLogger(object):
             runtime = self.timer() - self.tasks[task]
             del self.tasks[task]
             if runtime >= self.min_runtime:
-                self.info("Calculated {} in {:.2f} seconds.".format(task, runtime))
+                self.info(
+                    "Calculated {} in {:.2f} seconds.".format(task, runtime))
             return runtime
         except KeyError:
             self.info("Calculated {}.".format(task))

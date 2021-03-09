@@ -1,7 +1,9 @@
 from __future__ import absolute_import, print_function
-from builtins import bytes
-import sys
+
 import os
+import sys
+from builtins import bytes
+
 from . import utils
 
 
@@ -24,7 +26,8 @@ class RSafeStream(object):
     def __init__(self, stream="stdout"):
         if stream not in ["stderr", "stdout"]:
             raise ValueError(
-                "Expected stream in ['stderr', 'stdout']. " "Got {}".format(stream)
+                "Expected stream in ['stderr', 'stdout']. " "Got {}".format(
+                    stream)
             )
         self.stream = stream
         self.stream_handle = sys.stdout if stream == "stdout" else sys.stderr

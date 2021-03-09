@@ -1,9 +1,11 @@
-import tasklogger
-import time
-import numpy as np
 import logging
 import platform
 import sys
+import time
+
+import numpy as np
+
+import tasklogger
 
 
 def test_tasks():
@@ -73,7 +75,8 @@ def test_bad_timer():
 
 def test_duplicate():
     logger = tasklogger.TaskLogger("test_duplicate")
-    np.testing.assert_raises(RuntimeError, tasklogger.TaskLogger, "test_duplicate")
+    np.testing.assert_raises(
+        RuntimeError, tasklogger.TaskLogger, "test_duplicate")
     logger2 = tasklogger.TaskLogger("test_no_duplicate")
     assert logger.logger is not logger2.logger
 

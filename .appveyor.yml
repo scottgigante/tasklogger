@@ -19,7 +19,7 @@ build_script:
 - cmd: pip install --user -e .[test]
 test_script:
 - cmd: python setup.py test
-deploy_script: 
+deploy_script:
 - ps: |
     if ($env:APPVEYOR_REPO_BRANCH -ne "master" -or $env:APPVEYOR_REPO_TAG -ne "true") { return }
     # Specify account details for PyPI
