@@ -5,6 +5,7 @@ from setuptools import setup
 
 install_requires = [
     "future",
+    "Deprecated",
 ]
 
 test_requires = [
