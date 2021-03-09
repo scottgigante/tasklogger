@@ -4,7 +4,6 @@ from setuptools import setup
 import os
 
 install_requires = [
-    "future",
     "Deprecated",
 ]
 
