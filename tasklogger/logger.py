@@ -79,6 +79,10 @@ class TaskLogger(object):
             If False or 0, prints WARNING and higher messages.
             If True or 1, prints INFO and higher messages.
             If 2 or higher, prints all messages.
+
+        Returns
+        -------
+        self
         """
         if level is True or level == 1:
             level = logging.INFO
@@ -103,6 +107,8 @@ class TaskLogger(object):
             self.level = level
             self.logger.setLevel(level)
             self.debug("Set {} logging to {}".format(self.name, level_name))
+
+        return self
 
     def set_timer(self, timer="wall"):
         """Set the timer function
@@ -146,8 +152,7 @@ class TaskLogger(object):
         return self
 
     def _log(self, log_fn, msg):
-        """Log a message
-        """
+        """Log a message"""
         if self.indent > 0:
             msg = len(self.tasks) * self.indent * " " + msg
         return log_fn(msg)
