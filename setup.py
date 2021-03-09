@@ -1,7 +1,7 @@
-import os
-import sys
-
+from setuptools import find_packages
 from setuptools import setup
+
+import os
 
 install_requires = [
     "future",
@@ -15,11 +15,6 @@ test_requires = [
     "coveralls",
 ]
 
-if sys.version_info[:2] < (3, 5):
-    raise RuntimeError("Python version >=3.5 required.")
-elif sys.version_info[:2] >= (3, 6):
-    test_requires += ["black"]
-
 version_py = os.path.join(os.path.dirname(__file__), "tasklogger", "version.py")
 version = open(version_py).read().strip().split("=")[-1].replace('"', "").strip()
 
@@ -31,11 +26,10 @@ setup(
     description="tasklogger",
     author="Scott Gigante, Yale University",
     author_email="scott.gigante@yale.edu",
-    packages=[
-        "tasklogger",
-    ],
+    packages=find_packages(),
     include_package_data=True,
     license="GNU General Public License Version 2",
+    python_requires=">=3.6",
     install_requires=install_requires,
     extras_require={"test": test_requires},
     test_suite="nose2.collector.collector",
@@ -50,7 +44,7 @@ setup(
         "programming",
     ],
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Framework :: Jupyter",
         "Intended Audience :: Developers",

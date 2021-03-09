@@ -1,6 +1,3 @@
-from __future__ import absolute_import, print_function
-
-
 def in_ipynb():
     """Check if we are running in a Jupyter Notebook
 

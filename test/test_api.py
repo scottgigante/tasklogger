@@ -1,11 +1,9 @@
 import logging
+import numpy as np
 import platform
 import sys
-import time
-
-import numpy as np
-
 import tasklogger
+import time
 
 
 def test_get_logger():

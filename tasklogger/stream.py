@@ -1,10 +1,7 @@
-from __future__ import absolute_import, print_function
+from . import utils
 
 import os
 import sys
-from builtins import bytes
-
-from . import utils
 
 
 class RSafeStream(object):

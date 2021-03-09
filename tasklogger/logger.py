@@ -1,12 +1,9 @@
-from __future__ import absolute_import, print_function
+from . import stream
+from deprecated.sphinx import deprecated
 
 import contextlib
 import logging
 import time
-from deprecated.sphinx import deprecated
-from builtins import super
-
-from . import stream
 
 
 class TaskLogger(object):

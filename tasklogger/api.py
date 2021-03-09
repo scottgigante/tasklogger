@@ -1,8 +1,6 @@
-from __future__ import absolute_import, print_function
+from . import logger
 
 import logging
-
-from . import logger
 
 
 def get_tasklogger(name="TaskLogger"):

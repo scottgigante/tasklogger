@@ -67,4 +67,3 @@ jobs:
       with:
         name: ${{ matrix.config.name }}_results
         path: check
-
