@@ -1,9 +1,11 @@
-import tasklogger
-import time
-import numpy as np
 import logging
 import platform
 import sys
+import time
+
+import numpy as np
+
+import tasklogger
 
 
 def test_tasks():

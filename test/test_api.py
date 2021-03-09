@@ -1,9 +1,11 @@
-import tasklogger
-import time
 import logging
-import numpy as np
-import sys
 import platform
+import sys
+import time
+
+import numpy as np
+
+import tasklogger
 
 
 def test_get_logger():
@@ -44,7 +46,10 @@ def test_indent():
 def test_timer():
     logger = tasklogger.set_timer("wall")
     assert logger.timer == time.time
-    timer = lambda: 10
+
+    def timer():
+        return 10
+
     logger = tasklogger.set_timer(timer)
     assert logger.timer == timer
     if sys.version[0] == "2" and platform.system() == "Windows":

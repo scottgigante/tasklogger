@@ -1,7 +1,9 @@
 from __future__ import absolute_import, print_function
-from builtins import bytes
-import sys
+
 import os
+import sys
+from builtins import bytes
+
 from . import utils
 
 

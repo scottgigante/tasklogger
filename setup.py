@@ -1,5 +1,6 @@
 import os
 import sys
+
 from setuptools import setup
 
 install_requires = [
@@ -29,7 +30,9 @@ setup(
     description="tasklogger",
     author="Scott Gigante, Yale University",
     author_email="scott.gigante@yale.edu",
-    packages=["tasklogger",],
+    packages=[
+        "tasklogger",
+    ],
     include_package_data=True,
     license="GNU General Public License Version 2",
     install_requires=install_requires,
@@ -40,7 +43,11 @@ setup(
     download_url="https://github.com/scottgigante/tasklogger/archive/v{}.tar.gz".format(
         version
     ),
-    keywords=["big-data", "tool-development", "programming",],
+    keywords=[
+        "big-data",
+        "tool-development",
+        "programming",
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
