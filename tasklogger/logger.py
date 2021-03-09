@@ -3,6 +3,7 @@ from __future__ import absolute_import, print_function
 import contextlib
 import logging
 import time
+from deprecated.sphinx import deprecated
 from builtins import super
 
 from . import stream
@@ -159,7 +160,11 @@ class TaskLogger(object):
             msg = len(self.tasks) * self.indent * " " + msg
         return log_fn(msg)
 
+    @deprecated(version="1.1.0", reason="Use TaskLogger.log_debug instead")
     def debug(self, msg):
+        return self.log_debug(msg)
+
+    def log_debug(self, msg):
         """Log a DEBUG message
 
         Convenience function to log a message to the default Logger
@@ -171,7 +176,11 @@ class TaskLogger(object):
         """
         self._log(self.logger.debug, msg)
 
+    @deprecated(version="1.1.0", reason="Use TaskLogger.log_info instead")
     def info(self, msg):
+        return self.log_info(msg)
+
+    def log_info(self, msg):
         """Log an INFO message
 
         Convenience function to log a message to the default Logger
@@ -183,7 +192,11 @@ class TaskLogger(object):
         """
         self._log(self.logger.info, msg)
 
+    @deprecated(version="1.1.0", reason="Use TaskLogger.log_warning instead")
     def warning(self, msg):
+        return self.log_warning(msg)
+
+    def log_warning(self, msg):
         """Log a WARNING message
 
         Convenience function to log a message to the default Logger
@@ -195,7 +208,11 @@ class TaskLogger(object):
         """
         self._log(self.logger.warning, msg)
 
+    @deprecated(version="1.1.0", reason="Use TaskLogger.log_error instead")
     def error(self, msg):
+        return self.log_error(msg)
+
+    def log_error(self, msg):
         """Log an ERROR message
 
         Convenience function to log a message to the default Logger
@@ -207,7 +224,11 @@ class TaskLogger(object):
         """
         self._log(self.logger.error, msg)
 
+    @deprecated(version="1.1.0", reason="Use TaskLogger.log_critical instead")
     def critical(self, msg):
+        return self.log_critical(msg)
+
+    def log_critical(self, msg):
         """Log a CRITICAL message
 
         Convenience function to log a message to the default Logger
@@ -257,8 +278,12 @@ class TaskLogger(object):
         except KeyError:
             self.info("Calculated {}.".format(task))
 
-    @contextlib.contextmanager
+    @deprecated(version="1.1.0", reason="Use TaskLogger.log_task instead")
     def task(self, task):
+        return self.log_task(task)
+
+    @contextlib.contextmanager
+    def log_task(self, task):
         """Context manager for logging a task
 
         Times the action within the context frame
