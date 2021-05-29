@@ -93,3 +93,5 @@ def test_exists():
     assert logger_2.name == "test_exists_2"
     logger_3 = tasklogger.TaskLogger("test_exists", if_exists="ignore")
     assert logger_3.logger == logger.logger
+    with np.testing.assert_raises(ValueError):
+        tasklogger.TaskLogger("test_exists", if_exists="bad_value")
