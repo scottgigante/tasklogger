@@ -3,9 +3,10 @@ platform:
 - Win32
 environment:
   matrix:
-    - PYTHON: 35
     - PYTHON: 36
     - PYTHON: 37
+    - PYTHON: 38
+    - PYTHON: 39
   pypipassword:
     # https://ci.appveyor.com/tools/encrypt
     secure: OTDy8BHbSmZE4K0JvfAeYQ==
