@@ -3,9 +3,9 @@ platform:
 - Win32
 environment:
   matrix:
-    - PYTHON: 35
     - PYTHON: 36
     - PYTHON: 37
+    - PYTHON: 38
   pypipassword:
     # https://ci.appveyor.com/tools/encrypt
     secure: OTDy8BHbSmZE4K0JvfAeYQ==
@@ -19,7 +19,7 @@ build_script:
 - cmd: pip install --user -e .[test]
 test_script:
 - cmd: python setup.py test
-deploy_script: 
+deploy_script:
 - ps: |
     if ($env:APPVEYOR_REPO_BRANCH -ne "master" -or $env:APPVEYOR_REPO_TAG -ne "true") { return }
     # Specify account details for PyPI

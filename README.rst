@@ -9,8 +9,8 @@ tasklogger
     :target: https://anaconda.org/conda-forge/tasklogger/
     :alt: Latest Conda version
 .. image:: https://api.travis-ci.com/scottgigante/tasklogger.svg?branch=master
-    :target: https://travis-ci.com/scottgigante/tasklogger
-    :alt: Travis CI Build
+    :target: https://github.com/scottgigante/tasklogger/actions
+    :alt: GitHub Actions Build
 .. image:: https://ci.appveyor.com/api/projects/status/qi79tqay73uslr0i/branch/master?svg=true
     :target: https://ci.appveyor.com/project/scottgigante/tasklogger
     :alt: Appveyor Build
@@ -23,6 +23,15 @@ tasklogger
 .. image:: https://img.shields.io/github/stars/scottgigante/tasklogger.svg?style=social&label=Stars
     :target: https://github.com/scottgigante/tasklogger/
     :alt: GitHub stars
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code style: black
+.. image:: https://img.shields.io/badge/style%20guide-openstack-eb1a32.svg
+    :target: https://docs.openstack.org/hacking/latest/user/hacking.html#styleguide
+    :alt: Style Guide: OpenStack
+.. image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
+    :target: https://github.com/pre-commit/pre-commit
+    :alt: pre-commit
 
 An extension to the core python logging library for logging the beginning and completion of tasks and subtasks.
 

@@ -1,8 +1,7 @@
-from __future__ import absolute_import, print_function
-from builtins import bytes
-import sys
-import os
 from . import utils
+
+import os
+import sys
 
 
 class RSafeStream(object):
@@ -22,9 +21,10 @@ class RSafeStream(object):
     """
 
     def __init__(self, stream="stdout"):
-        if stream not in ['stderr', 'stdout']:
-            raise ValueError("Expected stream in ['stderr', 'stdout']. "
-                             "Got {}".format(stream))
+        if stream not in ["stderr", "stdout"]:
+            raise ValueError(
+                "Expected stream in ['stderr', 'stdout']. " "Got {}".format(stream)
+            )
         self.stream = stream
         self.stream_handle = sys.stdout if stream == "stdout" else sys.stderr
         if utils.in_ipynb():
@@ -33,15 +33,15 @@ class RSafeStream(object):
             self.write = self.write_r_safe
 
     def write_ipython(self, msg):
-        print(msg, end='', file=self.stream_handle)
+        print(msg, end="", file=self.stream_handle)
 
     def write_r_safe(self, msg):
         try:
-            os.write(1 if self.stream == "stdout" else 2, bytes(msg, 'utf8'))
+            os.write(1 if self.stream == "stdout" else 2, bytes(msg, "utf8"))
         except OSError as e:
             if str(e) == "[Errno 9] Bad file descriptor":
                 # weird windows 7 error
-                print(msg, end='')
+                print(msg, end="")
             else:
                 raise e
 

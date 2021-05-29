@@ -1,6 +1,6 @@
-from __future__ import absolute_import, print_function
-import logging
 from . import logger
+
+import logging
 
 
 def get_tasklogger(name="TaskLogger"):
@@ -216,7 +216,7 @@ def set_level(level=1, logger="TaskLogger"):
     return tasklogger
 
 
-def set_timer(timer='wall', logger="TaskLogger"):
+def set_timer(timer="wall", logger="TaskLogger"):
     """Set the timer function
 
     Convenience function to set the task timer
