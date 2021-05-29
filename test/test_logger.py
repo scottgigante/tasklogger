@@ -92,4 +92,4 @@ def test_exists():
     logger_2 = tasklogger.TaskLogger("test_exists", if_exists="increment")
     assert logger_2.name == "test_exists_2"
     logger_3 = tasklogger.TaskLogger("test_exists", if_exists="ignore")
-    assert logger_3 == logger
+    assert logger_3.logger == logger.logger

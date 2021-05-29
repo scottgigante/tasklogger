@@ -46,7 +46,8 @@ class TaskLogger(object):
         number of tasks currently running
     if_exists : {"error", "ignore", "increment"}, optional (default: "error")
         Behavior if a TaskLogger named `name` already exists. If "error", raises a
-        RuntimeError (as in `logging`). If "ignore", returns the existing
+        RuntimeError (as in `logging`). If "ignore", returns a new TaskLogger
+        attached to the `logging.Logger` attached to the existing
         TaskLogger of the same name. If "increment", creates a new TaskLogger with
         `name` incremented by an integer.
 
