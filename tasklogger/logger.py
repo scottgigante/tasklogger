@@ -6,6 +6,23 @@ import logging
 import time
 
 
+def _get_logger(name):
+    return logging.getLogger(name)
+
+
+def _tasklogger_exists(logger):
+    """Check if a `logging.Logger` already has an associated TaskLogger"""
+    return hasattr(logger, "tasklogger")
+
+
+def _increment_name(name, increment=1):
+    new_name = "{}_{}".format(name, increment)
+    if not _tasklogger_exists(_get_logger(new_name)):
+        return new_name
+    else:
+        return _increment_name(name, increment=increment + 1)
+
+
 class TaskLogger(object):
     """Class which deals with timing and logging tasks
 
@@ -27,6 +44,11 @@ class TaskLogger(object):
     indent : int, optional (default: 2)
         number of spaces by which to indent based on the
         number of tasks currently running
+    if_exists : {"error", "ignore", "increment"}, optional (default: "error")
+        Behavior if a TaskLogger named `name` already exists. If "error", raises a
+        RuntimeError (as in `logging`). If "ignore", returns the existing
+        TaskLogger of the same name. If "increment", creates a new TaskLogger with
+        `name` incremented by an integer.
 
     Properties
     ----------
@@ -42,6 +64,7 @@ class TaskLogger(object):
         stream="stdout",
         min_runtime=0.01,
         indent=2,
+        if_exists="error",
         **kwargs,
     ):
         self.tasks = {}
@@ -49,12 +72,24 @@ class TaskLogger(object):
         self.min_runtime = min_runtime
         self.stream = stream
         self.indent = indent
-        if hasattr(self.logger, "tasklogger"):
-            raise RuntimeError(
-                "TaskLogger {0} already exists. Please set "
-                "`name` to be unique or use "
-                "`tasklogger.get_tasklogger(logger={0})".format(name)
-            )
+        if _tasklogger_exists(self.logger):
+            if if_exists == "error":
+                raise RuntimeError(
+                    "TaskLogger {0} already exists. Please set "
+                    "`name` to be unique or set `if_exists` to "
+                    '"ignore" or "increment"'.format(name)
+                )
+            elif if_exists == "increment":
+                del self._logger
+                self.name = _increment_name(self.name)
+                assert not _tasklogger_exists(self.logger)
+            elif if_exists == "ignore":
+                pass
+            else:
+                raise ValueError(
+                    'Expected `if_exists` in "error", "ignore", "increment".'
+                    " Got {}".format(if_exists)
+                )
         self.set_level(level)
         self.set_timer(timer)
 
@@ -63,12 +98,9 @@ class TaskLogger(object):
         try:
             return self._logger
         except AttributeError:
-            self._logger = self.get_logger()
+            self._logger = _get_logger(self.name)
             self.level = self._logger.level
             return self._logger
-
-    def get_logger(self):
-        return logging.getLogger(self.name)
 
     def set_level(self, level=1):
         """Set the logging level

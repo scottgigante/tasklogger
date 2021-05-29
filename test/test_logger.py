@@ -81,3 +81,15 @@ def test_context():
     with logger.task("test"):
         assert "test" in logger.tasks
     assert "test" not in logger.tasks
+
+
+def test_exists():
+    logger = tasklogger.TaskLogger("test_exists")
+    with np.testing.assert_raises(RuntimeError):
+        tasklogger.TaskLogger("test_exists")
+    logger_1 = tasklogger.TaskLogger("test_exists", if_exists="increment")
+    assert logger_1.name == "test_exists_1"
+    logger_2 = tasklogger.TaskLogger("test_exists", if_exists="increment")
+    assert logger_2.name == "test_exists_2"
+    logger_3 = tasklogger.TaskLogger("test_exists", if_exists="ignore")
+    assert logger_3 == logger
