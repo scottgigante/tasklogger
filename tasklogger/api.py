@@ -107,7 +107,7 @@ def log_debug(msg, logger="TaskLogger"):
     logger : TaskLogger
     """
     tasklogger = get_tasklogger(logger)
-    tasklogger.debug(msg)
+    tasklogger.log_debug(msg)
     return tasklogger
 
 
@@ -128,7 +128,7 @@ def log_info(msg, logger="TaskLogger"):
     logger : TaskLogger
     """
     tasklogger = get_tasklogger(logger)
-    tasklogger.info(msg)
+    tasklogger.log_info(msg)
     return tasklogger
 
 

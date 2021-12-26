@@ -139,7 +139,7 @@ class TaskLogger(object):
         if level != self.logger.level:
             self.level = level
             self.logger.setLevel(level)
-            self.debug("Set {} logging to {}".format(self.name, level_name))
+            self.log_debug("Set {} logging to {}".format(self.name, level_name))
 
         return self
 
@@ -281,7 +281,7 @@ class TaskLogger(object):
         task : str
             Name of the task to be started
         """
-        self.info("Calculating {}...".format(task))
+        self.log_info("Calculating {}...".format(task))
         self.tasks[task] = self.timer()
 
     def complete_task(self, task):
@@ -303,10 +303,10 @@ class TaskLogger(object):
             runtime = self.timer() - self.tasks[task]
             del self.tasks[task]
             if runtime >= self.min_runtime:
-                self.info("Calculated {} in {:.2f} seconds.".format(task, runtime))
+                self.log_info("Calculated {} in {:.2f} seconds.".format(task, runtime))
             return runtime
         except KeyError:
-            self.info("Calculated {}.".format(task))
+            self.log_info("Calculated {}.".format(task))
 
     @deprecated(version="1.1.0", reason="Use TaskLogger.log_task instead")
     def task(self, task):
