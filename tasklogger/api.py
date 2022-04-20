@@ -87,7 +87,7 @@ def log_task(task, logger="TaskLogger"):
     Calculated test in 1.00 seconds.
     """
     tasklogger = get_tasklogger(logger)
-    return tasklogger.task(task)
+    return tasklogger.log_task(task)
 
 
 def log_debug(msg, logger="TaskLogger"):
@@ -149,7 +149,7 @@ def log_warning(msg, logger="TaskLogger"):
     logger : TaskLogger
     """
     tasklogger = get_tasklogger(logger)
-    tasklogger.warning(msg)
+    tasklogger.log_warning(msg)
     return tasklogger
 
 
@@ -170,7 +170,7 @@ def log_error(msg, logger="TaskLogger"):
     logger : TaskLogger
     """
     tasklogger = get_tasklogger(logger)
-    tasklogger.error(msg)
+    tasklogger.log_error(msg)
     return tasklogger
 
 
@@ -191,7 +191,7 @@ def log_critical(msg, logger="TaskLogger"):
     logger : TaskLogger
     """
     tasklogger = get_tasklogger(logger)
-    tasklogger.critical(msg)
+    tasklogger.log_critical(msg)
     return tasklogger
 
 

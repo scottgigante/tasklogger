@@ -32,8 +32,12 @@ class TaskLogger(object):
         Name used to retrieve the unique TaskLogger
     level : `int` or `bool`, optional (default: 1)
         Integer logging level.
-        Interchangeable with `logging.WARNING` (0, False),
-        `logging.INFO` (1, True) and `logging.DEBUG` (2).
+        If < -2, prints no messages.
+        If False or >= -2, prints CRITICAL messages.
+        If False or >= -1, prints ERROR messages.
+        If False or >= 0, prints WARNING messages.
+        If True or >= 1, prints INFO messages.
+        If >= 2, prints all messages.
     timer : {'wall', 'cpu', or callable}, optional (default 'wall')
         Timer function used to measure task running times.
         'wall' uses `time.time`, 'cpu' uses `time.process_time`
@@ -109,23 +113,44 @@ class TaskLogger(object):
         Parameters
         ----------
         level : `int` or `bool` (optional, default: 1)
-            If False or 0, prints WARNING and higher messages.
-            If True or 1, prints INFO and higher messages.
-            If 2 or higher, prints all messages.
+            If < -2, prints no messages.
+            If False or >= -2, prints CRITICAL messages.
+            If False or >= -1, prints ERROR messages.
+            If False or >= 0, prints WARNING messages.
+            If True or >= 1, prints INFO messages.
+            If >= 2, prints all messages.
 
         Returns
         -------
         self
         """
-        if level is True or level == 1:
-            level = logging.INFO
-            level_name = "INFO"
-        elif level is False or level <= 0:
-            level = logging.WARNING
-            level_name = "WARNING"
-        elif level >= 2:
-            level = logging.DEBUG
-            level_name = "DEBUG"
+
+        if isinstance(level,bool):
+            if level:
+                level = logging.INFO
+                level_name = "INFO"
+            else:
+                level = logging.WARNING
+                level_name = "WARNING"
+        else:
+            if level >= 2:
+                level = logging.DEBUG
+                level_name = "DEBUG"
+            elif level >= 1:
+                level = True
+                return self.set_level(level)
+            elif level >= 0:
+                level = False
+                return self.set_level(level)
+            elif level >= -1:
+                level = logging.ERROR
+                level_name = "ERROR"
+            elif level >= -2:
+                level = logging.CRITICAL
+                level_name = "CRITICAL"
+            else:
+                level = logging.IGNORE
+                level_name = "IGNORE"
 
         if not self.logger.handlers:
             self.logger.tasklogger = self
@@ -328,7 +353,7 @@ class TaskLogger(object):
         >>> import tasklogger
         >>> import time
         >>> logger = tasklogger.TaskLogger()
-        >>> with logger.task('test'):
+        >>> with logger.log_task('test'):
         ...     time.sleep(1)
         Calculating test...
         Calculated test in 1.00 seconds.
