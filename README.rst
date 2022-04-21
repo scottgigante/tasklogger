@@ -69,7 +69,7 @@ Simplify logging syntax with ``tasklogger.log_task``::
 
     >>> import tasklogger
     >>> import time
-    >>> with tasklogger.task("Supertask"):
+    >>> with tasklogger.log_task("Supertask"):
     ...     time.sleep(1)
     ...     with tasklogger.log_task("Subtask"):
     ...        time.sleep(1)
@@ -84,9 +84,9 @@ Log wall time, CPU time, or any other counter function with the class API::
     >>> import tasklogger
     >>> import time
     >>> logger = tasklogger.TaskLogger(name='cpu_logger', timer='cpu', min_runtime=0)
-    >>> with logger.task("Supertask"):
+    >>> with logger.log_task("Supertask"):
     ...     time.sleep(1)
-    ...     with logger.task("Subtask"):
+    ...     with logger.log_task("Subtask"):
     ...        _ = [[(i,j) for j in range(i)] for i in range(1000)]
     ...     time.sleep(1)
     Calculating Supertask...
@@ -94,9 +94,9 @@ Log wall time, CPU time, or any other counter function with the class API::
       Calculated Subtask in 0.09 seconds.
     Calculated Supertask in 0.09 seconds.
     >>> logger = tasklogger.TaskLogger(name='nano_logger', timer=time.monotonic_ns)
-    >>> with logger.task("Supertask"):
+    >>> with logger.log_task("Supertask"):
     ...     time.sleep(1)
-    ...     with logger.task("Subtask"):
+    ...     with logger.log_task("Subtask"):
     ...        time.sleep(1)
     ...     time.sleep(1)
     Calculating Supertask...

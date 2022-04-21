@@ -18,11 +18,11 @@ def test_tasks():
 
 def test_log():
     logger = tasklogger.TaskLogger("test_log")
-    logger.debug("debug")
-    logger.info("info")
-    logger.warning("warning")
-    logger.error("error")
-    logger.critical("critical")
+    logger.log_debug("debug")
+    logger.log_info("info")
+    logger.log_warning("warning")
+    logger.log_error("error")
+    logger.log_critical("critical")
 
 
 def test_level():
@@ -36,7 +36,21 @@ def test_level():
     logger.set_level(0)
     assert logger.level == logging.WARNING
     assert logger.logger.level == logging.WARNING
-
+    logger.set_level(-1)
+    assert logger.level == logging.ERROR
+    assert logger.logger.level == logging.ERROR
+    logger.set_level(-2)
+    assert logger.level == logging.CRITICAL
+    assert logger.logger.level == logging.CRITICAL
+    logger.set_level(-3)
+    assert logger.level == logging.IGNORE
+    assert logger.logger.level == logging.IGNORE
+    logger.set_level(True)
+    assert logger.level == logging.INFO
+    assert logger.logger.level == logging.INFO
+    logger.set_level(False)
+    assert logger.level == logging.WARNING
+    assert logger.logger.level == logging.WARNING
 
 def test_indent():
     logger = tasklogger.TaskLogger("test_indent")
@@ -78,7 +92,7 @@ def test_duplicate():
 
 def test_context():
     logger = tasklogger.TaskLogger("test_context")
-    with logger.task("test"):
+    with logger.log_task("test"):
         assert "test" in logger.tasks
     assert "test" not in logger.tasks
 
