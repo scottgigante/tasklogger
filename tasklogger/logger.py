@@ -1,10 +1,9 @@
-from . import stream
 from deprecated.sphinx import deprecated
 
 import contextlib
 import logging
 import time
-
+import sys
 
 def _get_logger(name):
     return logging.getLogger(name)
@@ -41,7 +40,8 @@ class TaskLogger(object):
     timer : {'wall', 'cpu', or callable}, optional (default 'wall')
         Timer function used to measure task running times.
         'wall' uses `time.time`, 'cpu' uses `time.process_time`
-    stream: ['stderr', 'stdout'], optional (default: "stdout")
+    stream: {'stderr', 'stdout', or file-like object posssessing `write()` \
+        and `flush()` methods}, optional (default: "stdout")
         File stream to which logs are printed
     min_runtime : float, optional (default: 0.01)
         Time below which a completion message is not printed
@@ -75,7 +75,7 @@ class TaskLogger(object):
         self.tasks = {}
         self.name = name
         self.min_runtime = min_runtime
-        self.stream = stream
+        self.stream = self.__parse_stream__(stream)
         self.indent = indent
         if _tasklogger_exists(self.logger):
             if if_exists == "error":
@@ -97,6 +97,50 @@ class TaskLogger(object):
                 )
         self.set_level(level)
         self.set_timer(timer)
+
+    @staticmethod
+    def __parse_stream__(stream):
+        """Parse stream inputs. 
+
+        Parameters
+        ----------
+        stream : {'stdout','stderr'}, file-like objects posessing write() and \
+            flush() methods
+
+        Returns
+        -------
+        io.TextIOWrapper or type(stream)
+
+        Raises
+        ------
+        ValueError : Input `stream` not in `{'stdout','stderr'}` and is not \
+            an instance of `io.TextIOWrapper`
+        """
+
+        if isinstance(stream,str):
+            stream = stream.lower()
+            if stream in ['stdout', 'stderr']:
+                stream = getattr(sys, stream)
+            else:
+                raise ValueError('Input stream is neither "stdout" or "stder".')
+        else:
+            if hasattr(stream, 'write'):
+                haswrite=True
+            if hasattr(stream,'flush'):
+                hasflush=True
+            if haswrite and hasflush:
+                # valid file-like objects. pass through.
+                passstream
+                # do some error parsing
+                if all([not haswrite, not hasflush]):
+                    e_string = 'write() and flush() methods'
+                else:
+                    e_string = 'write()' if not haswrite else 'flush()'
+                    e_string += ' method'
+                raise ValueError(f"Object of type {stream.__class__.__name__}"
+                " does not possess {e_string} required of stream objects.")
+        
+        return stream
 
     @property
     def logger(self):
@@ -156,7 +200,7 @@ class TaskLogger(object):
             self.logger.tasklogger = self
             self.logger.propagate = False
             handler = logging.StreamHandler(
-                stream=stream.RSafeStream(stream=self.stream)
+                stream=self.stream
             )
             handler.setFormatter(logging.Formatter(fmt="%(message)s"))
             self.logger.addHandler(handler)
