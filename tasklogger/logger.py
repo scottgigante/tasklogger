@@ -124,10 +124,8 @@ class TaskLogger(object):
             else:
                 raise ValueError('Input stream is neither "stdout", "stderr", or a file-like.')
         else:
-            if hasattr(stream, 'write'):
-                haswrite=True
-            if hasattr(stream,'flush'):
-                hasflush=True
+            haswrite = hasattr(stream, 'write')
+            hasflush = hasattr(stream,'flush')
             if not (haswrite and hasflush):
                 # do some error parsing
                 if not (haswrite or hasflush):
