@@ -135,7 +135,7 @@ class TaskLogger(object):
                 else:
                     e_string = 'write()' if not haswrite else 'flush()'
                     e_string += ' method'
-                raise ValueError(f"Object of type {stream.__class__.__name__}"
+                raise ValueError(f"Object of type {type(stream).__name__}"
                 " does not possess {e_string} required of stream objects.")
         
         return stream
