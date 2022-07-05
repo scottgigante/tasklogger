@@ -122,7 +122,7 @@ class TaskLogger(object):
             if stream in ['stdout', 'stderr']:
                 stream = getattr(sys, stream)
             else:
-                raise ValueError('Input stream is neither "stdout" or "stder".')
+                raise ValueError('Input stream is neither "stdout", "stderr", or a file-like.')
         else:
             if hasattr(stream, 'write'):
                 haswrite=True
