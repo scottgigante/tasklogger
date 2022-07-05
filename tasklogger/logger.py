@@ -75,7 +75,7 @@ class TaskLogger(object):
         self.tasks = {}
         self.name = name
         self.min_runtime = min_runtime
-        self.stream = self.__parse_stream__(stream)
+        self.stream = self._parse_stream(stream)
         self.indent = indent
         if _tasklogger_exists(self.logger):
             if if_exists == "error":
@@ -99,7 +99,7 @@ class TaskLogger(object):
         self.set_timer(timer)
 
     @staticmethod
-    def __parse_stream__(stream):
+    def _parse_stream(stream):
         """Parse stream inputs. 
 
         Parameters
@@ -128,11 +128,9 @@ class TaskLogger(object):
                 haswrite=True
             if hasattr(stream,'flush'):
                 hasflush=True
-            if haswrite and hasflush:
-                # valid file-like objects. pass through.
-                passstream
+            if not (haswrite and hasflush):
                 # do some error parsing
-                if all([not haswrite, not hasflush]):
+                if not (haswrite or hasflush):
                     e_string = 'write() and flush() methods'
                 else:
                     e_string = 'write()' if not haswrite else 'flush()'
