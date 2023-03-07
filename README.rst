@@ -53,16 +53,16 @@ Receive timed updates mid-computation using ``tasklogger.log_start`` and ``taskl
 
     >>> import tasklogger
     >>> import time
-    >>> tasklogger.log_start("Supertask")
+    >>> tasklogger.start_task("Supertask")
     Calculating Supertask...
     >>> time.sleep(1)
-    >>> tasklogger.log_start("Subtask")
+    >>> tasklogger.start_task("Subtask")
       Calculating Subtask...
     >>> time.sleep(1)
-    >>> tasklogger.log_complete("Subtask")
+    >>> tasklogger.complete_task("Subtask")
       Calculated Subtask in 1.01 seconds.
     >>> time.sleep(1)
-    >>> tasklogger.log_complete("Supertask")
+    >>> tasklogger.complete_task("Supertask")
     Calculated Supertask in 3.02 seconds.
 
 Simplify logging syntax with ``tasklogger.log_task``::
