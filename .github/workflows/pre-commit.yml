@@ -33,7 +33,7 @@ jobs:
         uses: pre-commit/action@v3.0.0
 
       - name: Commit files
-        if: steps.precommit.outcome == "failure"
+        if: "steps.precommit.outcome == 'failure'"
         run: |
           git checkout -- .github/workflows
           if [[ `git status --porcelain --untracked-files=no` ]]; then
@@ -50,6 +50,6 @@ jobs:
           branch: ${{ github.ref }}
 
       - name: Check pre-commit
-        if: steps.precommit.outcome == "failure"
+        if: "steps.precommit.outcome == 'failure'"
         continue-on-error: false
         uses: pre-commit/action@v3.0.0
