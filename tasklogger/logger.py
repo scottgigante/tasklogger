@@ -2,8 +2,9 @@ from deprecated.sphinx import deprecated
 
 import contextlib
 import logging
-import time
 import sys
+import time
+
 
 def _get_logger(name):
     return logging.getLogger(name)
@@ -100,7 +101,7 @@ class TaskLogger(object):
 
     @staticmethod
     def _parse_stream(stream):
-        """Parse stream inputs. 
+        """Parse stream inputs.
 
         Parameters
         ----------
@@ -117,25 +118,29 @@ class TaskLogger(object):
             an instance of `io.TextIOWrapper`
         """
 
-        if isinstance(stream,str):
+        if isinstance(stream, str):
             stream = stream.lower()
-            if stream in ['stdout', 'stderr']:
+            if stream in ["stdout", "stderr"]:
                 stream = getattr(sys, stream)
             else:
-                raise ValueError('Input stream is neither "stdout", "stderr", or a file-like.')
+                raise ValueError(
+                    'Input stream is neither "stdout", "stderr", or a file-like.'
+                )
         else:
-            haswrite = hasattr(stream, 'write')
-            hasflush = hasattr(stream,'flush')
+            haswrite = hasattr(stream, "write")
+            hasflush = hasattr(stream, "flush")
             if not (haswrite and hasflush):
                 # do some error parsing
                 if not (haswrite or hasflush):
-                    e_string = 'write() and flush() methods'
+                    e_string = "write() and flush() methods"
                 else:
-                    e_string = 'write()' if not haswrite else 'flush()'
-                    e_string += ' method'
-                raise ValueError(f"Object of type {type(stream).__name__}"
-                " does not possess {e_string} required of stream objects.")
-        
+                    e_string = "write()" if not haswrite else "flush()"
+                    e_string += " method"
+                raise ValueError(
+                    f"Object of type {type(stream).__name__}"
+                    " does not possess {e_string} required of stream objects."
+                )
+
         return stream
 
     @property
@@ -165,7 +170,7 @@ class TaskLogger(object):
         self
         """
 
-        if isinstance(level,bool):
+        if isinstance(level, bool):
             if level:
                 level = logging.INFO
                 level_name = "INFO"
@@ -195,9 +200,7 @@ class TaskLogger(object):
         if not self.logger.handlers:
             self.logger.tasklogger = self
             self.logger.propagate = False
-            handler = logging.StreamHandler(
-                stream=self.stream
-            )
+            handler = logging.StreamHandler(stream=self.stream)
             handler.setFormatter(logging.Formatter(fmt="%(message)s"))
             self.logger.addHandler(handler)
 
