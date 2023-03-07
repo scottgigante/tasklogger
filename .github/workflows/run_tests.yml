@@ -54,4 +54,7 @@ jobs:
       run: nose2 -vvv
 
     - name: Coveralls
-      uses: coverallsapp/github-action@v2
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        coveralls
