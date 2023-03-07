@@ -1,5 +1,4 @@
 import numpy as np
-import os
 import sys
 import tasklogger
 
@@ -30,7 +29,7 @@ def test_invalid_stream_str():
     )
 
 
-def test_invalid_stream_str():
+def test_invalid_stream_cls():
     class InvalidStream:
         pass
 
