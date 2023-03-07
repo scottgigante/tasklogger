@@ -54,4 +54,4 @@ jobs:
       run: nose2 -vvv
 
     - name: Coveralls
-      uses: coverallsapp/github-action
+      uses: coverallsapp/github-action@v2
