@@ -3,6 +3,7 @@ import os
 import sys
 import tasklogger
 
+
 def test_no_stdout():
     temp = sys.stdout
     sys.stdout = None
@@ -22,28 +23,46 @@ def test_stderr():
 
 def test_invalid_stream_str():
     np.testing.assert_raises(
-        ValueError, tasklogger.TaskLogger, 'Input stream is neither "stdout", "stderr", or a file-like', stream="invalid"
+        ValueError,
+        tasklogger.TaskLogger,
+        'Input stream is neither "stdout", "stderr", or a file-like',
+        stream="invalid",
     )
+
 
 def test_invalid_stream_str():
     class InvalidStream:
         pass
+
     np.testing.assert_raises(
-        ValueError, tasklogger.TaskLogger, 'does not possess write() and flush() methods required of stream objects', stream=InvalidStream()
+        ValueError,
+        tasklogger.TaskLogger,
+        "does not possess write() and flush() methods required of stream objects",
+        stream=InvalidStream(),
     )
+
 
 def test_invalid_stream_noflush():
     class InvalidStream:
         def write(self):
             pass
+
     np.testing.assert_raises(
-        ValueError, tasklogger.TaskLogger, 'does not possess flush() method required of stream objects', stream=InvalidStream()
+        ValueError,
+        tasklogger.TaskLogger,
+        "does not possess flush() method required of stream objects",
+        stream=InvalidStream(),
     )
+
 
 def test_invalid_stream_nowrite():
     class InvalidStream:
         def flush(self):
             pass
+
     np.testing.assert_raises(
-        ValueError, tasklogger.TaskLogger, 'does not possess write() method required of stream objects', stream=InvalidStream()
+        ValueError,
+        tasklogger.TaskLogger,
+        "does not possess write() method required of stream objects",
+        stream=InvalidStream(),
     )

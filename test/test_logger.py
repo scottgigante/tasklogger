@@ -52,6 +52,7 @@ def test_level():
     assert logger.level == logging.WARNING
     assert logger.logger.level == logging.WARNING
 
+
 def test_indent():
     logger = tasklogger.TaskLogger("test_indent")
     logger.set_indent(0)
