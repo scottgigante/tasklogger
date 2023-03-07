@@ -8,6 +8,10 @@ on:
     branches:
       - '*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
 
   run_tester:
@@ -18,26 +22,22 @@ jobs:
       fail-fast: false
       matrix:
         config:
+        - {name: '3.11', os: ubuntu-latest, python: '3.11' }
+        - {name: '3.10', os: ubuntu-latest, python: '3.10' }
         - {name: '3.9', os: ubuntu-latest, python: '3.9' }
         - {name: '3.8', os: ubuntu-latest, python: '3.8' }
         - {name: '3.7', os: ubuntu-latest, python: '3.7' }
-        - {name: '3.6', os: ubuntu-latest, python: '3.6' }
 
     steps:
-    - name: Cancel Previous Runs
-      uses: styfle/cancel-workflow-action@0.6.0
-      with:
-        access_token: ${{ github.token }}
-
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.config.python }}
 
     - name: Cache Python packages
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ env.pythonLocation }}
         key: ${{runner.os}}-pip-${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}
@@ -54,15 +54,4 @@ jobs:
       run: nose2 -vvv
 
     - name: Coveralls
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COVERALLS_SERVICE_NAME: github
-      run: |
-        coveralls
-
-    - name: Upload check results on fail
-      if: failure()
-      uses: actions/upload-artifact@master
-      with:
-        name: ${{ matrix.config.name }}_results
-        path: check
+      uses: coverallsapp/github-action
